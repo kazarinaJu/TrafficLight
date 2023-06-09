@@ -8,14 +8,52 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var currentLight = CurrentLight.red
+    
+    private let lightIsOn: CGFloat = 1
+    private let lightIsOff: CGFloat = 0.3
+    
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            TrafficLightView(color: .red)
+                .opacity(currentLight == .red ? lightIsOn : lightIsOff)
+            TrafficLightView(color: .yellow)
+                .opacity(currentLight == .yellow ? lightIsOn : lightIsOff)
+            TrafficLightView(color: .green)
+                .opacity(currentLight == .green ? lightIsOn : lightIsOff)
+
+            Spacer()
+            
+            Button(action: {buttonTapped()}) {
+                Text("START")
+                    .foregroundColor(.white)
+                    .font(.title.bold())
+            }
+                .buttonStyle(BorderlessButtonStyle())
+                .frame(width: 200, height: 60)
+                .background(.blue)
+                .cornerRadius(20)
+                .overlay(RoundedRectangle(cornerRadius: 20)
+                    .stroke(Color.white, lineWidth: 4))
         }
         .padding()
+    }
+}
+
+extension ContentView {
+    private enum CurrentLight {
+        case red, yellow, green
+    }
+    
+    private func buttonTapped() {
+        switch currentLight {
+        case .red:
+            currentLight = .yellow
+        case .yellow:
+            currentLight = .green
+        case .green:
+            currentLight = .red
+        }
     }
 }
 
