@@ -14,9 +14,7 @@ struct TrafficLightView: View {
             .foregroundColor(color)
             .frame(width: 120, height: 120)
             .overlay(Circle().stroke(Color.white, lineWidth: 4))
-            .shadow(radius: 0)
             .padding(.bottom, 5)
-
     }
 }
 
@@ -25,3 +23,4 @@ struct TrafficLightView_Previews: PreviewProvider {
         TrafficLightView(color: .gray)
     }
 }
+
