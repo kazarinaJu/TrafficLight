@@ -9,6 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var currentLight = CurrentLight.red
+    @State private var buttonText = "START"
     
     private let lightIsOn: CGFloat = 1
     private let lightIsOff: CGFloat = 0.3
@@ -25,7 +26,7 @@ struct ContentView: View {
             Spacer()
             
             Button(action: { startButtonTapped() }) {
-                Text("START")
+                Text(buttonText)
                     .foregroundColor(.white)
                     .font(.title.bold())
             }
@@ -52,6 +53,8 @@ extension ContentView {
     }
     
     private func startButtonTapped() {
+        if buttonText == "START" { buttonText = "NEXT" }
+
         switch currentLight {
         case .red:
             currentLight = .yellow
