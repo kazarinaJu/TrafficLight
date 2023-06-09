@@ -24,7 +24,7 @@ struct ContentView: View {
 
             Spacer()
             
-            Button(action: {buttonTapped()}) {
+            Button(action: { startButtonTapped() }) {
                 Text("START")
                     .foregroundColor(.white)
                     .font(.title.bold())
@@ -40,12 +40,18 @@ struct ContentView: View {
     }
 }
 
+struct ContentView_Previews: PreviewProvider {
+    static var previews: some View {
+        ContentView()
+    }
+}
+
 extension ContentView {
     private enum CurrentLight {
         case red, yellow, green
     }
     
-    private func buttonTapped() {
+    private func startButtonTapped() {
         switch currentLight {
         case .red:
             currentLight = .yellow
@@ -54,11 +60,5 @@ extension ContentView {
         case .green:
             currentLight = .red
         }
-    }
-}
-
-struct ContentView_Previews: PreviewProvider {
-    static var previews: some View {
-        ContentView()
     }
 }
