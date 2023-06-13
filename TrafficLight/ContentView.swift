@@ -7,61 +7,57 @@
 
 import SwiftUI
 
+private enum CurrentLight {
+    case off, red, yellow, green
+}
+
 struct ContentView: View {
-    @State private var currentLight = CurrentLight.red
+    @State private var currentLight: CurrentLight = .off
     @State private var buttonText = "START"
     
-    private let lightIsOn: CGFloat = 1
-    private let lightIsOff: CGFloat = 0.3
-    
     var body: some View {
-        VStack {
-            TrafficLightView(color: .red)
-                .opacity(currentLight == .red ? lightIsOn : lightIsOff)
-            TrafficLightView(color: .yellow)
-                .opacity(currentLight == .yellow ? lightIsOn : lightIsOff)
-            TrafficLightView(color: .green)
-                .opacity(currentLight == .green ? lightIsOn : lightIsOff)
-
-            Spacer()
+        ZStack {
+            Color(.black)
+                .ignoresSafeArea()
             
-            Button(action: { startButtonTapped() }) {
-                Text(buttonText)
-                    .foregroundColor(.white)
-                    .font(.title.bold())
+            VStack(spacing: 20) {
+                TrafficLightView(
+                    color: .red,
+                    opacity: currentLight == .red ? 1 : 0.3
+                )
+                TrafficLightView(
+                    color: .yellow,
+                    opacity: currentLight == .yellow ? 1 : 0.3
+                )
+                TrafficLightView(
+                    color: .green,
+                    opacity: currentLight == .green ? 1 : 0.3
+                )
+                
+                Spacer()
+                
+                StartButtonView(title: buttonText) {
+                    if buttonText == "START" {
+                        buttonText = "NEXT"
+                    }
+                    nextColor()
+                }
             }
-                .buttonStyle(BorderlessButtonStyle())
-                .frame(width: 200, height: 60)
-                .background(.blue)
-                .cornerRadius(20)
-                .overlay(RoundedRectangle(cornerRadius: 20)
-                    .stroke(Color.white, lineWidth: 4))
+            .padding()
         }
-        .padding()
+    }
+    private func nextColor() {
+        switch currentLight {
+        case .off: currentLight = .red
+        case .red: currentLight = .yellow
+        case .yellow: currentLight = .green
+        case .green: currentLight = .red
+        }
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
-    }
-}
-
-extension ContentView {
-    private enum CurrentLight {
-        case red, yellow, green
-    }
-    
-    private func startButtonTapped() {
-        if buttonText == "START" { buttonText = "NEXT" }
-
-        switch currentLight {
-        case .red:
-            currentLight = .yellow
-        case .yellow:
-            currentLight = .green
-        case .green:
-            currentLight = .red
-        }
     }
 }
